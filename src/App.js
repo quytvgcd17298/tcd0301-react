@@ -3,25 +3,31 @@ import { Component } from 'react';
 import Navbar from './Components/layout/Navbar';
 import Users from './Components/users/Users';
 import axios from 'axios';
+import Search from './Components/users/Search';
 
 class App extends Component {
   state = {
     usersData: [],
     title: "TCD0301-React",
+    setLoading: false
   };
-  componentDidMount(){
-    axios.get("https://api.github.com/users").then((response) => {
-      console.log(response.data)
+
+  searchUsers = async (text) => {
+    const response = await axios
+    .get(`https://api.github.com/search/users?q=${text}`)
+      console.log(response.data.items)
       this.setState({
-      usersData: response.data
+      usersData: response.data.items,
       });
-    });
-  };
+    };
+  
   render() {
   return (
     <div>
       <Navbar/>
-        <div className="container">
+      <div className="container">
+      <Search searchUsers = {this.searchUsers}></Search>
+      {this.state.searchText}
         <Users usersData = {this.state.usersData}></Users>
         </div>
     </div>
