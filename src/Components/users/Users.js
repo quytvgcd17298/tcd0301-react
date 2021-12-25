@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import UserItems from './UserItems'
 
 export default class Users extends Component {
-    usersData = [
+    /* usersData = [
         {
             login: "mojombo",
             id: 1,
@@ -33,11 +33,11 @@ export default class Users extends Component {
             avatar_url: "https://avatars.githubusercontent.com/u/3?v=4",
             html_url: "https://github.com/mojombo",
           },
-        ]
+        ] */
     render() {
         return (
             <div style={userStyle}>
-                {this.usersData.map((user) => (
+                {this.props.usersData.map((user) => (
                 <UserItems key={user.id} user = {user}></UserItems>))
                 }
             </div>
