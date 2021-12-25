@@ -7,6 +7,7 @@ import axios from 'axios';
 class App extends Component {
   state = {
     usersData: [],
+    title: "TCD0301-React",
   };
   componentDidMount(){
     axios.get("https://api.github.com/users").then((response) => {
