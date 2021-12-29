@@ -9,12 +9,14 @@ import { Fragment } from 'react/cjs/react.production.min';
 import About from './Components/pages/About';
 import NotFound from './Components/pages/NotFound';
 import {Switch} from "react-router-dom";
+import User from './Components/users/User';
  
 class App extends Component {
   state = {
     usersData: [],
     title: "TCD0301-React",
-    showLoading: false
+    showLoading: false,
+    user:{}
   };
 
   searchUsers = async (text) => {
@@ -32,6 +34,15 @@ class App extends Component {
       this.setState({
         usersData: [],
       })
+    }
+
+    getUser = async (login) => {
+      const response = await axios
+      .get(`https://api.github.com/users/${login}`);
+      this.setState({
+        user: response.data
+      })
+      console.log(response.data)
     }
 
   render() {
@@ -60,6 +71,16 @@ class App extends Component {
         ></Route>
         <Route
         exact path ="/About" component ={About}
+        ></Route>
+        <Route
+        exact path= "/user/:login"
+        render={(props) => (
+          <User
+          {...props}
+          user = {this.state.user}
+          getUser = {this.getUser}
+          ></User>
+        )}
         ></Route>
         <Route
         path = "/" component={NotFound}
