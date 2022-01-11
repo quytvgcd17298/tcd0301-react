@@ -1,11 +1,16 @@
-import React, { Component, Fragment } from "react";
+import React, { useEffect, Fragment } from "react";
 import { Link } from "react-router-dom";
-export default class User extends Component {
-    componentDidMount() {
-        this.props.getUser(this.props.match.params.login);
-    }
-    render() {
-        const {
+
+const User = (props) => {
+
+  useEffect(() => {
+    getUser(match.params.login);
+  }, []);
+
+  const { getUser, match} = props;
+
+
+    const {
       name,
       login,
       company,
@@ -20,7 +25,7 @@ export default class User extends Component {
       blog,
       webiste,
       public_gists,
-        } = this.props.user
+        } = props.user
         return (
             <div className='container'>
         <Fragment>
@@ -62,7 +67,8 @@ export default class User extends Component {
           <div className="badge badge-success">Following: {following}</div>
           <div className="badge badge-dark">Public repos: {public_repos}</div>
           <div className="badge badge-light">Public gists: {public_gists}</div>
-        </div>            </div>
+        </div>            
+        </div>
         )
-    }
 }
+export default User;

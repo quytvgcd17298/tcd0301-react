@@ -1,6 +1,6 @@
 import React from 'react'
 
-function NotFound () {
+const NotFound = () => {
     return (
         <div className='Container'>
             <h1>404 Not Found</h1>

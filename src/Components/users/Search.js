@@ -1,32 +1,28 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 
-class Search extends Component {
-    state = {
-        text: "",
+const Search = (props) => {
+    const [text, setText] = useState("");
+    const {searchUsers, clearHandle, usersData} = props
+
+    const onChange = (event) => {
+        setText( event.target.value );
     };
 
-    onChange = (event) => {
-        this.setState({ text: event.target.value });
-    };
-
-    onClick = (event) => {
+    const onClick = (event) => {
         event.preventDefault();
-        if (this.state.text.trim() === "") {
+        if (text.trim() === "") {
           alert("Cannot be empty");
           return;
         }
-        this.props.searchUsers(this.state.text)
-        this.setState({
-          text: "",
-        });
+        searchUsers(text)
+          setText("");
       };
 
-    clearBtn = (event) => {
+    const clearBtn = (event) => {
         event.preventDefault();
-        this.props.clearHandle();
+        clearHandle();
     }
 
-    render() {
         return (
             <div>
                 <form className='container'>
@@ -34,15 +30,15 @@ class Search extends Component {
                 placeholder='Search by name'
                 type= 'text'
                 name= 'text'
-                value={this.state.text}
-                onChange={this.onChange}
+                value={text}
+                onChange={onChange}
                 ></input>
                 <input
                 type="submit"
                 className="btn btn-dark btn-block"
-                onClick={this.onClick}></input>
-                {this.props.usersData.length > 0 ? (
-                <button onClick={this.clearBtn} className="btn btn-light btn-block">
+                onClick={onClick}></input>
+                {usersData.length > 0 ? (
+                <button onClick={clearBtn} className="btn btn-light btn-block">
                   Clear
                 </button>
             ) : (
@@ -51,6 +47,5 @@ class Search extends Component {
                 </form>
             </div>
         );
-    }
 }
 export default Search;

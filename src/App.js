@@ -1,5 +1,5 @@
 import './App.css';
-import { Component } from 'react';
+import { useState } from 'react';
 import Navbar from './Components/layout/Navbar';
 import Users from './Components/users/Users';
 import axios from 'axios';
@@ -11,45 +11,37 @@ import NotFound from './Components/pages/NotFound';
 import {Switch} from "react-router-dom";
 import User from './Components/users/User';
  
-class App extends Component {
-  state = {
-    usersData: [],
-    title: "TCD0301-React",
-    showLoading: false,
-    user:{}
-  };
+const App = () => {
 
-  searchUsers = async (text) => {
-    this.setState({showLoading: true})
+  const [usersData, setUsersData] = useState([""]);
+  const [showLoading, setShowLoading] = useState(false);
+  const [user, setUser] = useState({});
+  const [title, setTitle] = useState("TCD0301-React");
+
+  const searchUsers = async (text) => {
+    setShowLoading(true);
     const response = await axios
     .get(`https://api.github.com/search/users?q=${text}`)
-      console.log(response.data.items)
-      this.setState({
-      usersData: response.data.items,
-      showLoading: false
-      });
+      console.log(response.data.items);
+      setUsersData(response.data.items);
+      setShowLoading(false);
     };
   
-    clearHandle = () => {
-      this.setState({
-        usersData: [],
-      })
+    const clearHandle = () => {     
+        setUsersData([]);
     }
 
-    getUser = async (login) => {
+    const getUser = async (login) => {
       const response = await axios
       .get(`https://api.github.com/users/${login}`);
-      this.setState({
-        user: response.data
-      })
-      console.log(response.data)
-    }
+        console.log(response.data)
+        setUser(response.data)
+          }
 
-  render() {
   return (
     <Router>
     <div>
-      <Navbar title = {this.state.title}/>
+      <Navbar title = {title}/>
       <div className="container">
       <Switch>
         <Route
@@ -58,13 +50,13 @@ class App extends Component {
         render={() => (
           <Fragment>
             <Search 
-              searchUsers = {this.searchUsers}
-              clearHandle = {this.clearHandle}
-              usersData = {this.state.usersData}>
+              searchUsers = {searchUsers}
+              clearHandle = {clearHandle}
+              usersData = {usersData}>
             </Search>
             <Users 
-              showLoading = {this.state.showLoading}
-              usersData = {this.state.usersData}>
+              showLoading = {showLoading}
+              usersData = {usersData}>
             </Users>
           </Fragment>
         )}
@@ -77,8 +69,8 @@ class App extends Component {
         render={(props) => (
           <User
           {...props}
-          user = {this.state.user}
-          getUser = {this.getUser}
+          user = {user}
+          getUser = {getUser}
           ></User>
         )}
         ></Route>
@@ -90,7 +82,6 @@ class App extends Component {
     </div>
     </Router>
     );
-  }
 }
 
 export default App;
